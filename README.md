@@ -104,10 +104,10 @@ The JIRA field that stores the sprint value for an issue.
 JIRA_CUSTOM_FIELD_SPRINT = 'customfield_10004'
 ```
 
-### JIRA_STORY_POINTS_FIELD
+### JIRA_CUSTOM_FIELD_STORY_POINTS
 
 The JIRA field that stores the story point value for an issue.
 
 ```python
-JIRA_STORY_POINTS_FIELD = 'customfield_10006'
+JIRA_CUSTOM_FIELD_STORY_POINTS = 'customfield_10006'
 ```
