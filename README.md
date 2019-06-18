@@ -71,3 +71,43 @@ user9@example.com: completed 12 stories for 21.5 points, carried over 4/12
  Story points: 100
  Points per sprint: 25
 ```
+
+## Settings
+
+You can create a `settings_override.py` file, and populate the following
+settings:
+
+### JIRA_BASE_URL, JIRA_USERNAME, JIRA_PASSWORD
+
+The URL of your JIRA instance. This can be used instead of using `auth`
+and creating a `~/.jirarc` file.
+
+```python
+JIRA_BASE_URL = 'https://my-jira-host'
+JIRA_USERNAME = 'my-username@my-domain.com'
+JIRA_PASSWORD = 'my-password'
+```
+
+### JIRA_BOARD_ID
+
+The JIRA sprint board ID, from the sprint board URL 'RapidView' argument.
+
+```python
+JIRA_BOARD_ID = 1234
+```
+
+### JIRA_CUSTOM_FIELD_SPRINT
+
+The JIRA field that stores the sprint value for an issue.
+
+```python
+JIRA_CUSTOM_FIELD_SPRINT = 'customfield_10004'
+```
+
+### JIRA_STORY_POINTS_FIELD
+
+The JIRA field that stores the story point value for an issue.
+
+```python
+JIRA_STORY_POINTS_FIELD = 'customfield_10006'
+```
