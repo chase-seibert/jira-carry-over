@@ -35,3 +35,39 @@ You can get your board ID from the 'RapidView' ID present in JIRA sprint board u
 ```bash
 python jira-carry-over.py report --board 446 --since 2019-01-01
 ```
+
+Example output:
+
+```bash
+user1@example.com: completed 1 stories for 3.0 points, carried over 0/1
+
+user2@example.com: completed 5 stories for 8.0 points, carried over 0/5
+
+user3@example.com: completed 7 stories for 12.5 points, carried over 0/7
+
+user4@example.com: completed 15 stories for 18.5 points, carried over 0/15
+
+user5@example.com: completed 13 stories for 20.0 points, carried over 1/13
+   https://jira.corp.example.com/browse/MYPROJ-479
+
+user6@example.com: completed 1 stories for 0.0 points, carried over 1/1
+   https://jira.corp.example.com/browse/MYPROJ-440
+
+user7@example.com: completed 7 stories for 14.0 points, carried over 0/7
+
+user8@example.com: completed 2 stories for 3.0 points, carried over 1/2
+   https://jira.corp.example.com/browse/MYPROJ-422
+
+user9@example.com: completed 12 stories for 21.5 points, carried over 4/12
+   https://jira.corp.example.com/browse/MYPROJ-443
+   https://jira.corp.example.com/browse/MYPROJ-443
+   https://jira.corp.example.com/browse/MYPROJ-65
+   https://jira.corp.example.com/browse/MYPROJ-65
+
+ === Totals ===
+ Sprints: Sprint1, Sprint2, Sprint3, Sprint4
+ Completed stories: 63
+ Carried over stories: 7
+ Story points: 100
+ Points per sprint: 25
+```
