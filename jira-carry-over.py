@@ -30,6 +30,7 @@ def valid_date(s):
 
 
 def report(args):
+    issue_cache = dict()
     issues_per_assignee = defaultdict(set)
     issues_carried_over_per_assignee = defaultdict(set)
     total_issues, total_points = 0, 0
@@ -37,26 +38,31 @@ def report(args):
     # TODO filter out sprints by date
     for sprint in sprints:
         for issue in lib_jira.get_issues(sprint.id):
+            issue_cache[issue.key] = issue
             issue_sprints = getattr(issue.fields, settings.JIRA_CUSTOM_FIELD_SPRINT)
             if not issue.fields.assignee:
                 continue
-            issues_per_assignee[issue.fields.assignee.name].add(issue)
+            # storing keys not objects because these objects dupe in sets
+            issues_per_assignee[issue.fields.assignee.name].add(issue.key)
             if len(issue_sprints) >= 2:
-                issues_carried_over_per_assignee[issue.fields.assignee.name].add(issue)
+                issues_carried_over_per_assignee[issue.fields.assignee.name].add(issue.key)
             total_issues += 1
-    for name, issues in issues_per_assignee.items():
-        carrier_over = issues_carried_over_per_assignee.get(name, [])
-        points = sum([getattr(i.fields, settings.JIRA_CUSTOM_FIELD_STORY_POINTS) for i in issues])
+    for name, issue_keys in issues_per_assignee.items():
+        carried_over = issues_carried_over_per_assignee.get(name, [])
+        points = 0
+        for key in issue_keys:
+            issue = issue_cache.get(key)
+            points += getattr(issue.fields, settings.JIRA_CUSTOM_FIELD_STORY_POINTS) or 0
         total_points += points
         print '%s%s: completed %s stories for %s points, carried over %s/%s' % (
             colorama.Fore.CYAN,
             name,
-            len(issues),
+            len(issue_keys),
             points,
-            len(carrier_over),
-            len(issues))
-        for issue in carrier_over:
-            print '   %s/browse/%s' % (settings.JIRA_BASE_URL, issue.key)
+            len(carried_over),
+            len(issue_keys))
+        for issue_key in carried_over:
+            print '   %s/browse/%s' % (settings.JIRA_BASE_URL, issue_key)
         print ''
     print '%s=== Totals ===' % (colorama.Fore.CYAN)
     print 'Sprints: %s' % ', '.join([s.name for s in sprints])
