@@ -42,6 +42,8 @@ def report(args):
             issue_sprints = getattr(issue.fields, settings.JIRA_CUSTOM_FIELD_SPRINT)
             if not issue.fields.assignee:
                 continue
+            if issue.fields.assignee.name in settings.IGNORE_ASSIGNEES:
+                continue
             # storing keys not objects because these objects dupe in sets
             issues_per_assignee[issue.fields.assignee.name].add(issue.key)
             if len(issue_sprints) >= 2:
