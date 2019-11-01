@@ -47,10 +47,14 @@ def load_credentials():
         exit(1)
 
 
-def get_sprints(board_id, since):
+def get_sprints(board_id, since, sprint_ids=''):
     jira = _connect()
-    sprints = []
-    for sprint in jira.sprints(board_id, extended=True):
+    all_sprints, sprints = [], []
+    if sprint_ids:
+        all_sprints = [jira.sprint(int(id)) for id in sprint_ids.split(',')]
+    else:
+        all_sprints = jira.sprints(board_id, extended=True)
+    for sprint in all_sprints:
         # u'03/May/19 11:27 PM'
         if sprint.completeDate and sprint.completeDate != 'None':
             date_str = sprint.completeDate[:9]
@@ -58,7 +62,7 @@ def get_sprints(board_id, since):
         else:
             # sprint not done yet, don't process current sprint
             continue
-        if sprint_completed >= since:
+        if not since or sprint_completed >= since:
             sprints.append(sprint)
     return sprints
 

@@ -34,7 +34,9 @@ def report(args):
     issues_per_assignee = defaultdict(set)
     issues_carried_over_per_assignee = defaultdict(set)
     total_issues, total_points = 0, 0
-    sprints = lib_jira.get_sprints(args.board, args.since)
+    sprints = lib_jira.get_sprints(args.board, args.since, args.sprint_ids)
+    if not sprints:
+        raise Exception("No sprints found")
     # TODO filter out sprints by date
     for sprint in sprints:
         for issue in lib_jira.get_issues(sprint.id):
@@ -93,6 +95,7 @@ if __name__ == '__main__':
     parser_report.add_argument('--board', help='JIRA Board ID',
         **kwargs_or_default(settings.JIRA_BOARD_ID))
     parser_report.add_argument('--since', help='Date in YYYY-MM-DD', type=valid_date)
+    parser_report.add_argument('--sprint-ids', help='Comma separated list of sprint IDs')
     parser_report.set_defaults(func=report)
 
     args = parser.parse_args()
